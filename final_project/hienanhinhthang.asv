@@ -1,0 +1,20 @@
+function [x, y] = hienanhinhthang(app)
+app.fxy = matlabFunction(app.fxy);
+h = (app.xn - app.x0)/app.N;
+app.x = app.x0:app.h:app.xn;
+app.y = zeros(1,length(app.x));
+app.y(1) = app.y0;
+for i=1:length(app.x)-1
+    data = app.y(i) + h*app.fxy(app.x(i),app.y(i));
+    while(1)
+            app.y(i+1) = app.y(i) + app.h/2 *(app.fxy(app.x(i),app.y(i))+app.fxy(app.x(i+1),data));
+            if(abs(app.y(i+1) - data) <= app.saiso)
+                break;
+            end
+            data = app.y(i+1);
+    end
+end
+plot(app.Axe,app.x,app.y);
+end
+
+
